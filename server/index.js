@@ -39,11 +39,11 @@ app.get('/books', async (req, res) => {
 app.get('/books/:id', async (req, res) => {
 	try {
 		const { id } = req.params;
-		const allBooks = await pool.query(
-			'SELECT * FROM books WHERE book_id = $1',
-			[id]
-		);
-		console.log(allBooks.rows[0]);
+		const book = await pool.query('SELECT * FROM books WHERE book_id = $1', [
+			id,
+		]);
+		res.json(book.rows[0]);
+		console.log(book.rows[0]);
 	} catch (err) {
 		console.error(err.message);
 	}
@@ -55,14 +55,28 @@ app.put('/books/:id', async (req, res) => {
 		const { id } = req.params;
 		const { description } = req.body;
 		const updateTodo = await pool.query(
-			'UPDATE todo SET description = $1 WHERE todo_id =$2',
+			'UPDATE books SET description = $1 WHERE book_id =$2',
 			[description, id]
 		);
-		console.log(allBooks.rows[0]);
+		console.log();
+		res.json('Todo was updated!');
 	} catch (err) {
 		console.error(err.message);
 	}
 });
+
+//Delete a book
+app.delete('/books/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		const book = await pool.query('DELETE FROM books WHERE book_id = $1', [id]);
+		res.json('Book Deleted!');
+		console.log(book.rows[0]);
+	} catch (err) {
+		console.error(err.message);
+	}
+});
+
 app.listen(5000, () => {
 	console.log('server has started on port 5000');
 });
