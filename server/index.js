@@ -9,6 +9,17 @@ app.use(express.json());
 
 //Routes
 
+//Create a book
+
+app.post('/books', async (req, res) => {
+	try {
+		console.log(req.body);
+	} catch (err) {
+		console.error(err.message);
+	}
+	//await
+});
+
 //Get all books
 
 //Get a book
